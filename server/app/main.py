@@ -8,11 +8,11 @@ from app.routers import values
 from app.services.database import engine
 
 logging.basicConfig(
-    level=logging.INFO,  # Mức độ log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Định dạng log
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("app.log"),  # Ghi log vào file
-        logging.StreamHandler(),  # Hiển thị log trên console
+        logging.FileHandler("app.log"),
+        logging.StreamHandler(),
     ],
 )
 

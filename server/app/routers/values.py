@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 @router.get("/all")
 async def get_all_values(db: AsyncSession = Depends(get_db)):
-    logger.info("111111111111111111111111")
     result = await db.execute(text("SELECT * FROM values"))
     values = [dict(row) for row in result.mappings()]
     return values
