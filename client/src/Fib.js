@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+
 const Fib = () => {
   const [seenIndexes, setSeenIndexes] = useState([]);
   const [values, setValues] = useState({});
@@ -31,7 +32,7 @@ const Fib = () => {
   };
 
   const renderSeenIndexes = () => {
-    return seenIndexes.map(({ number }) => number).join(", ");
+    return seenIndexes?.map(({ number }) => number).join(", ") || "Loading...";
   };
 
   const renderValues = () => {
