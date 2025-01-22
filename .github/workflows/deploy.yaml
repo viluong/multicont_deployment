@@ -125,14 +125,18 @@ jobs:
 
       - name: Load Docker image
         run: docker load -i image.tar
-
+      
+      - name: Fetch variable enviroment for testing
+        run: |
+          echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> server/.env.dev
+          echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> server/.env.dev
+          echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> server/.env.dev
+          echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> server/.env.dev
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> server/.env.dev
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> server/.env.dev
       - name: Run tests
         env:
-          PG_USER: ${{ secrets.DB_USER_TEST }}
-          PG_HOST: ${{ secrets.DB_HOST_TEST }}
-          PG_DATABASE: ${{ secrets.DB_TEST }}
-          PG_PASSWORD: ${{ secrets.DB_PW_TEST }}
-          PG_PORT: ${{ secrets.DB_PORT_TEST }}
+          ENV: dev
         run: |
           docker run -e CI=true webapp/fastapi-app pytest
   

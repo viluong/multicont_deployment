@@ -1,3 +1,4 @@
+import os
 from pydantic_settings import BaseSettings
 
 
@@ -11,6 +12,6 @@ class Settings(BaseSettings):
     redis_port: int
 
     class Config:
-        env_file = ".env"
+        env_file = ".env" if os.getenv("ENV") == "prod" else ".env.dev"
 
 settings = Settings()
