@@ -128,11 +128,11 @@ jobs:
 
       - name: Run tests
         env:
-          PG_USER=${{ secrets.DB_USER_TEST }}
-          PG_HOST=${{ secrets.DB_HOST_TEST }}
-          PG_DATABASE=${{ secrets.DB_TEST }}
-          PG_PASSWORD=${{ secrets.DB_PW_TEST }}
-          PG_PORT=${{ secrets.DB_PORT_TEST }}
+          PG_USER: ${{ secrets.DB_USER_TEST }}
+          PG_HOST: ${{ secrets.DB_HOST_TEST }}
+          PG_DATABASE: ${{ secrets.DB_TEST }}
+          PG_PASSWORD: ${{ secrets.DB_PW_TEST }}
+          PG_PORT: ${{ secrets.DB_PORT_TEST }}
         run: |
           docker run -e CI=true webapp/fastapi-app pytest
   
