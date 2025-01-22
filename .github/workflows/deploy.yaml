@@ -134,7 +134,10 @@ jobs:
 
       - name: Load Docker image
         run: docker load -i image.tar
-      
+      - name: Debug
+        run: |
+          [ -f .env.dev ] && echo "File exists" || echo "File does not exist"
+
       - name: Run tests
         env:
           ENV: dev
