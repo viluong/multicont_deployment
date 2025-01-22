@@ -34,11 +34,23 @@ jobs:
         run: |
           echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> ./server/.env.dev
           echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> ./server/.env.dev
-          echo "PG_PORT=${{ secrets.DB_HOST_TEST }}" >> ./server/.env.dev
+          echo "PG_PORT=${{ secrets.DB_PORT_TEST }}" >> ./server/.env.dev
           echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> ./server/.env.dev
           echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> ./server/.env.dev
           echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> ./server/.env.dev
           echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> ./server/.env.dev
+
+      - name: Build for testing
+        run: docker build -t webapp/fastapi-app -f ./server/Dockerfile ./server
+      
+      - name: Save Docker image for testing as artifact
+        run: docker save -o image.tar webapp/fastapi-app
+
+      - name: Upload Docker image image for testing artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar
 
       - name: Setup AWS CLI
         run: |
@@ -69,18 +81,6 @@ jobs:
 
           chmod 600 server/.env
           chmod 600 worker/.env
-
-      - name: Build for testing
-        run: docker build -t webapp/fastapi-app -f ./server/Dockerfile ./server
-      
-      - name: Save Docker image for testing as artifact
-        run: docker save -o image.tar webapp/fastapi-app
-
-      - name: Upload Docker image image for testing artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-image
-          path: image.tar
 
       - name: Build multi-image for deployment
         run: | 
