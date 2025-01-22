@@ -29,6 +29,20 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Fetch enviroment variables for testing
+        run: |
+          echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> ./server/.env.dev
+          echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> ./server/.env.dev
+          echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> ./server/.env.dev
+          echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> ./server/.env.dev
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> ./server/.env.dev
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> ./server/.env.dev
+      
+      - name: Debug 1
+        run: |
+          cd server
+          ls -la 
 
       - name: Setup AWS CLI
         run: |
@@ -62,6 +76,9 @@ jobs:
 
       - name: Build for testing
         run: docker build -t webapp/fastapi-app -f ./server/Dockerfile ./server
+      
+      - name: Debug 1.2
+        run: docker run webapp/fastapi-app ls -la
 
       - name: Save Docker image for testing as artifact
         run: docker save -o image.tar webapp/fastapi-app
@@ -117,15 +134,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Fetch enviroment variables for testing
-        run: |
-          echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> .env.dev
-          echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> .env.dev
-          echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> .env.dev
-          echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> .env.dev
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> .env.dev
-          echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> .env.dev
-
       - name: Download Docker image artifact
         uses: actions/download-artifact@v3
         with:
@@ -135,15 +143,14 @@ jobs:
       - name: Load Docker image
         run: docker load -i image.tar
       
-      - name: Debug
-        run: |
-          ls -la
+      - name: Debug 2
+        run: docker run -e CI=true webapp/fastapi-app:latest ls -la
 
       - name: Run tests
         env:
           ENV: dev
         run: |
-          docker run -e CI=true webapp/fastapi-app pytest
+          docker run -e CI=true webapp/fastapi-app:latest pytest
   
   deploy:
     runs-on: ubuntu-latest
