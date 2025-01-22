@@ -1,46 +1,22 @@
 version: '3'
 services:
-  postgres:
-    image: 'postgres:13'
-    environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-      POSTGRES_DB: ${PG_DATABASE}
-  redis:
-    image: 'redis:4'
-  nginx:
-    depends_on:
-      - api
-      - client
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - '3050:80'
-  api:
-    build:
-      dockerfile: Dockerfile
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    env_file:
-      - ./server/.env
   client:
-    environment:
-      - WDS_SOCKET_PORT=0
-    build:
-      dockerfile: Dockerfile
-      context: ./client
-    volumes:
-      - /app/node_modules
-      - ./client:/app
+    image: 'ticokene20/multi-client:latest'
+    mem_limit: 128m
+    hostname: client
+  server:
+    image: 'ticokene20/multi-server:latest'
+    mem_limit: 128m
+    hostname: api
+    env_file: ./server/.env
   worker:
-    build:
-      dockerfile: Dockerfile
-      context: ./worker
-    volumes:
-      - ./worker:/app
-    env_file:
-      - ./worker/.env
+    image: 'ticokene20/multi-worker:latest'
+    mem_limit: 128m
+    hostname: worker
+    env_file: ./worker/.env
+  nginx:
+    image: 'ticokene20/multi-nginx:latest'
+    mem_limit: 128m
+    hostname: nginx
+    ports:
+      - '80:80'
