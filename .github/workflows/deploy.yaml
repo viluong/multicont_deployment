@@ -22,14 +22,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          
-      - name: Fetch environment variables from AWS Parameter Store
-        id: fetch-env
+      
+      - name: Setup aws cli
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install
-
+          
+      - name: Fetch environment variables from AWS Parameter Store
+        id: fetch-env
+        run: |
           aws ssm get-parameters-by-path \
             --path "/multicont-deployment/server/.env/" \
             --with-decryption \
