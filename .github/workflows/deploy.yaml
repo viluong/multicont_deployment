@@ -48,7 +48,7 @@ jobs:
           chmod 600 worker/.env
 
       - name: Build for testing
-      - run: docker build -t webapp/fastapi-app -f ./server/Dockerfile ./server
+        run: docker build -t webapp/fastapi-app -f ./server/Dockerfile ./server
 
       - name: Save Docker image for testing as artifact
         run: docker save -o image.tar webapp/fastapi-app
