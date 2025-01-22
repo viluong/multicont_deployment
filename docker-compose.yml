@@ -1,4 +1,3 @@
-version: '3'
 services:
   client:
     image: 'ticokene20/multi-client:latest'
