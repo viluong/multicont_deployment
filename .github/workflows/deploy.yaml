@@ -30,7 +30,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Setup aws cli
+      - name: Setup AWS CLI
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip
@@ -39,8 +39,17 @@ jobs:
           unzip awscliv2.zip
           sudo ./aws/install --update
           aws --version
+      
+      - name: Fetch enviroment variables for testing
+        run: |
+          echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> .env.dev
+          echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> .env.dev
+          echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> .env.dev
+          echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> .env.dev
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> .env.dev
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> .env.dev
 
-      - name: Fetch environment variables from AWS Parameter Store
+      - name: Fetch environment variables from AWS Parameter Store for production
         id: fetch-env
         run: |
           aws ssm get-parameters-by-path \
@@ -126,14 +135,6 @@ jobs:
       - name: Load Docker image
         run: docker load -i image.tar
       
-      - name: Fetch variable enviroment for testing
-        run: |
-          echo "PG_USER=${{ secrets.DB_USER_TEST }}" >> server/.env.dev
-          echo "PG_HOST=${{ secrets.DB_HOST_TEST }}" >> server/.env.dev
-          echo "PG_DATABASE=${{ secrets.DB_TEST }}" >> server/.env.dev
-          echo "PG_PASSWORD=${{ secrets.DB_PW_TEST }}" >> server/.env.dev
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST_TEST }}" >> server/.env.dev
-          echo "REDIS_PORT=${{ secrets.REDIS_PORT_TEST }}" >> server/.env.dev
       - name: Run tests
         env:
           ENV: dev
