@@ -79,8 +79,8 @@ jobs:
             --query "Parameters[*].{Name:Name,Value:Value}" \
             --output text | awk -F'/' '{print $NF "=" $2}' > ./worker/.env
 
-          chmod 600 ./server/.env
-          chmod 600 ./worker/.env
+#          chmod 600 ./server/.env
+#          chmod 600 ./worker/.env
 
       - name: Build multi-image for deployment
         run: | 
