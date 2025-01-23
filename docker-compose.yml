@@ -19,3 +19,8 @@ services:
     hostname: nginx
     ports:
       - '80:80'
+  migrations:
+    image: 'ticokene20/multi-server:latest'
+    env_file: .env
+    command: >
+      sh -c "python -m alembic upgrade head"
