@@ -22,5 +22,4 @@ services:
   migrations:
     image: 'ticokene20/multi-server:latest'
     env_file: .env
-    command: >
-      sh -c "python -m alembic upgrade head"
+    command: alembic upgrade head
