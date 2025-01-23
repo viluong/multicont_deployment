@@ -70,24 +70,24 @@ jobs:
             --with-decryption \
             --region ap-southeast-1 \
             --query "Parameters[*].{Name:Name,Value:Value}" \
-            --output text | awk "{
-                  key = arr[length(arr)]  
-                  value = $2  
-                  print key '=' value  
-                  split($1, arr, '/')  
-              }" >> ./server/.env
+            --output text | awk '{
+                split($1, arr, "/")  
+                key = arr[length(arr)]
+                value = $2
+                print key "=" value
+            }' > ./server/.env
 
           aws ssm get-parameters-by-path \
             --path "/multicont-deployment/worker/.env/" \
             --with-decryption \
             --region ap-southeast-1 \
             --query "Parameters[*].{Name:Name,Value:Value}" \
-            --output text | awk "{
-                  key = arr[length(arr)]  
-                  value = $2  
-                  print key '=' value  
-                  split($1, arr, '/')  
-              }" >> ./worker/.env
+            --output text | awk '{
+                split($1, arr, "/")  
+                key = arr[length(arr)]
+                value = $2
+                print key "=" value
+            }' > ./worker/.env
 
 #          chmod 600 ./server/.env
 #          chmod 600 ./worker/.env
