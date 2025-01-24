@@ -1,7 +1,9 @@
+import logging
+
 from redis.asyncio import Redis, ConnectionPool
 from app.config import settings
 
-from app.routers.values import logger
+logger = logging.getLogger(__name__)
 
 redis_pool = ConnectionPool.from_url(
     f"redis://{settings.redis_host}:{settings.redis_port}",
