@@ -3,7 +3,6 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    env: str
     pg_user: str
     pg_host: str
     pg_database: str
