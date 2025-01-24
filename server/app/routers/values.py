@@ -22,7 +22,10 @@ async def get_all_values(db: AsyncSession = Depends(get_db)):
 
 @router.get("/current")
 async def get_current_values(redis=Depends(get_redis)):
+    logger.debug("11111111111 22222222222222222222 22222222")
     values = await redis.hgetall("values")
+    logger.debug("3333333333333333333333333")
+
     return values
 
 
