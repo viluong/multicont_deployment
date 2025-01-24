@@ -8,7 +8,7 @@ from app.routers import values
 from app.services.database import engine
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
         logging.FileHandler("app.log"),
