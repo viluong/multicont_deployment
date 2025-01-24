@@ -12,6 +12,6 @@ class Settings(BaseSettings):
     redis_port: int
 
     class Config:
-        env_file = ".env.dev" if os.getenv("ENV") == "dev" else ".env"
+        env_file = ".env"
 
 settings = Settings()
