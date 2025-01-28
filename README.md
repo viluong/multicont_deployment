@@ -193,7 +193,7 @@ You may need to refresh, but eventually, you should see a green checkmark undern
  
 8. Do these steps with another variables: **/multicont-deployment/server/.env/PG_HOST**, **/multicont-deployment/server/.env/PG_PASSWORD**, **/multicont-deployment/server/.env/PG_PORT**, **/multicont-deployment/server/.env/PG_USER**,
 **/multicont-deployment/server/.env/REDIS_HOST**, **/multicont-deployment/server/.env/REDIS_PORT**, **/multicont-deployment/worker/.env/REDIS_HOST**, **/multicont-deployment/worker/.env/REDIS_PORT**. 
-These variables correspond to the variables in the /server/.env.example and /multicont-deployment/worker/.env.example files.
+These variables correspond to the variables in the /server/.env.example and /worker/.env.example files.
 
 **IAM Keys for Deployment**
 
